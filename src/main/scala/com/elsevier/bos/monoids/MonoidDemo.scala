@@ -2,15 +2,13 @@ package com.elsevier.bos.monoids
 
 object MonoidDemo extends App{
 
-  val sum = List(1,2,3).foldLeft(0){
-    (acc, value) => acc + value
-  }
+  import MyMonoid._
+  
+  val sum = List(1,2,3).foldLeft(intMonoid.empty)(intMonoid.combine)
 
   println(sum)
 
-  val concatenation = List("h","e","l", "l", "o").foldLeft(""){
-    (acc, value) => acc + value
-  }
+  val concatenation = List("h","e","l", "l", "o").foldLeft(stringMonoid.empty)(stringMonoid.combine)
 
   println(concatenation)
 
