@@ -1,16 +1,24 @@
 package com.elsevier.bos.monoids
 
 object MonoidDemo extends App{
-
   import MyMonoid._
-  
-  val sum = List(1,2,3).foldLeft(intMonoid.empty)(intMonoid.combine)
 
+  def add[T](items: List[T])(monoid: MyMonoid[T]): T = {
+    items.foldLeft(monoid.empty)(monoid.combine)
+  }
+
+//  val sum = List(1,2,3).foldLeft(intMonoid.empty)(intMonoid.combine)
+  val sum = add(List(1,2,3))(intMonoid)
   println(sum)
 
-  val concatenation = List("h","e","l", "l", "o").foldLeft(stringMonoid.empty)(stringMonoid.combine)
+//  val concatenation = List("h","e","l", "l", "o").foldLeft(stringMonoid.empty)(stringMonoid.combine)
+  val concatenation = add(List("h","e","l", "l", "o"))(stringMonoid)
 
   println(concatenation)
+
+//  what about option monoid?
+//  val optionSum = add[Option[Int]](List(Some(1), Some(2), Some(3), None, Some(5)))(???)
+//  println(optionSum)
 
 
   //what about combine a list of maps?
