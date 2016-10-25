@@ -26,10 +26,10 @@ object MonoidDemo extends App{
 
   //let's come back to our map problem
 
-//  val mapValues: Map[String, Int] = add(List(Map("a" -> 1, "b" -> 2), Map("a" -> 1, "c" -> 2), Map("b" -> 3, "d" -> 0)))
+  val mapValues: Map[String, Int] = add(List(Map("a" -> 1, "b" -> 2), Map("a" -> 1, "c" -> 2), Map("b" -> 3, "d" -> 0)))
 
 
 //  Map("a" -> 2, "b" -> 5, "c" -> 2, "d" -> 0)
-//  println(mapValues)
+  println(mapValues)
 
 }

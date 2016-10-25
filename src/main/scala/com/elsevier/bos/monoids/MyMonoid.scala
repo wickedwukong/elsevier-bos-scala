@@ -32,5 +32,17 @@ object MyMonoid {
     }
   }
 
+  implicit def mapMonoid[K, V](implicit monoidForV: MyMonoid[V]) = new MyMonoid[Map[K, V]] {
+    override def empty: Map[K, V] = Map[K, V]()
+
+    override def combine(t1: Map[K, V], t2: Map[K, V]): Map[K, V] = {
+      (t1.keySet ++ t2.keySet).foldLeft(empty){
+        (mergedMap, key) => mergedMap.updated(key,
+          monoidForV.combine(
+            t1.getOrElse(key, monoidForV.empty),
+            t2.getOrElse(key, monoidForV.empty)))
+      }
+    }
+  }
 }
 
