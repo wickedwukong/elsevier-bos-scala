@@ -1,0 +1,38 @@
+1. master: talk about the similarity between sum and concatenation. And briefly mention combine a list of map and promise to come back later
+
+2. mymonoid: introdue the concept of monoid. Mention the reusibit of intMonoid and stringMonoid. mention its characteristics: empty and combine and associativity and parallelibity.
+
+but still, there is a bit duplicaiton between the sum and concatenation. Can we generify it a bit futher? checkout generic-add
+
+3. generic-add: talk about the generic add. the pose the question of option monoid. uncomment option monoid and ask people to try to implement it. maybe give people 10 mins. then checkout option-monoid
+
+4. option-monoid: show my implementation and compare with people's. draw people's attention to the duplication. What about have this?
+
+def optionMonoid[A] = new MyMonoid[Option[A]] {
+}
+
+checkout option-monoid-can-be-better
+
+5. option-monoid-can-be-better
+
+ask peple to implment:
+
+def optionMonoid[A] = new MyMonoid[Option[A]] {
+    override def empty: Option[A] = ???
+
+    override def combine(t1: Option[A], t2: Option[A]): Option[A] = ???
+  }
+
+ give people hints on using type class.
+
+ have some discussion, maybe show some code and may ask peopel to show their solution.
+
+ 6. type-class-monoid: show the solution. 
+
+ 7. map-monoid
+
+
+
+
+
+
