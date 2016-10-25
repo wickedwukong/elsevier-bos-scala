@@ -17,11 +17,11 @@ object MonoidDemo extends App{
   println(concatenation)
 
 //  what about option monoid?
-//  val optionIntSum = add[Option[Int]](List(Some(1), Some(2), Some(3), None, Some(5)))(???)
-//  println(optionIntSum)
+  val optionIntSum = add[Option[Int]](List(Some(1), Some(2), Some(3), None, Some(5)))(optionIntMonoid)
+  println(optionIntSum)
 
-//  val optionStringSum = add[Option[String]](List(Some("h"), Some("e"), Some("l"), None, Some("o")))(???)
-//  println(optionStringSum)
+  val optionStringSum = add[Option[String]](List(Some("h"), Some("e"), Some("l"), None, Some("o")))(optionStringMonoid)
+  println(optionStringSum)
 
 
   //what about combine a list of maps?
