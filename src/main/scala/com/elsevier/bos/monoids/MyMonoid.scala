@@ -19,31 +19,13 @@ object MyMonoid {
     override def combine(t1: String, t2: String): String = t1 + t2
   }
 
-  def optionStringMonoid = new MyMonoid[Option[String]] {
+  //what about a generic option monoid implementation, instead of implementation for both int and string?
+  //how can we make this work?
 
-    override def empty: Option[String] = None
+  def optionMonoid[A] = new MyMonoid[Option[A]] {
+    override def empty: Option[A] = ???
 
-    override def combine(t1: Option[String], t2: Option[String]): Option[String] = {
-      (t1, t2) match {
-        case (Some(x), Some(y)) => Some(stringMonoid.combine(x, y))
-        case (Some(x), None) => Some(stringMonoid.combine(x, stringMonoid.empty))
-        case (None, Some(y)) => Some(stringMonoid.combine(stringMonoid.empty, y))
-        case (None, None) => Some(stringMonoid.combine(stringMonoid.empty, stringMonoid.empty))
-      }
-    }
-  }
-
-  def optionIntMonoid = new MyMonoid[Option[Int]] {
-    override def empty: Option[Int] = None
-
-    override def combine(t1: Option[Int], t2: Option[Int]): Option[Int] = {
-      (t1, t2) match {
-        case (Some(x), Some(y)) => Some(intMonoid.combine(x, y))
-        case (Some(x), None) => Some(intMonoid.combine(x, intMonoid.empty))
-        case (None, Some(y)) => Some(intMonoid.combine(intMonoid.empty, y))
-        case (None, None) => Some(intMonoid.combine(intMonoid.empty, intMonoid.empty))
-      }
-    }
+    override def combine(t1: Option[A], t2: Option[A]): Option[A] = ???
   }
 }
 

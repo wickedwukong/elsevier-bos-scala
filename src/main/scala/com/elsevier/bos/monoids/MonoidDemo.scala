@@ -8,19 +8,19 @@ object MonoidDemo extends App{
   }
 
 //  val sum = List(1,2,3).foldLeft(intMonoid.empty)(intMonoid.combine)
-  val sum = add(List(1,2,3))(intMonoid)
+  val sum = add(List(1,2,3))
   println(sum)
 
 //  val concatenation = List("h","e","l", "l", "o").foldLeft(stringMonoid.empty)(stringMonoid.combine)
-  val concatenation = add(List("h","e","l", "l", "o"))(stringMonoid)
+  val concatenation = add(List("h","e","l", "l", "o"))
 
   println(concatenation)
 
 //  what about option monoid?
-  val optionIntSum = add[Option[Int]](List(Some(1), Some(2), Some(3), None, Some(5)))(optionIntMonoid)
+  val optionIntSum = add[Option[Int]](List(Some(1), Some(2), Some(3), None, Some(5)))
   println(optionIntSum)
 
-  val optionStringSum = add[Option[String]](List(Some("h"), Some("e"), Some("l"), None, Some("o")))(optionStringMonoid)
+  val optionStringSum = add[Option[String]](List(Some("h"), Some("e"), Some("l"), None, Some("o")))
   println(optionStringSum)
 
 
