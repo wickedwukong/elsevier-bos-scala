@@ -4,9 +4,7 @@ import cats.Eval._
 
 object ConsoleUsingCatsEvalMonad {
   def ReadLine = Eval.always{ io.StdIn.readLine() }
-  def PrintLine(message: String) = Eval.always{
-    scala.Console.println("in PrintlnLine")
-    scala.Console.println(message) }
+  def PrintLine(message: String) = Eval.always{scala.Console.println(message) }
 }
 
 object FahrenheitToCelsiusWithCatsEvalMonad extends App{
