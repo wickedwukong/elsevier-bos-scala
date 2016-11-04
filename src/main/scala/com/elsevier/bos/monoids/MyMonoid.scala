@@ -19,6 +19,20 @@ object MyMonoid {
     override def combine(t1: String, t2: String): String = t1 + t2
   }
 
+  def optionMonoidWithoutImplict[A](monid:MyMonoid[A]): MyMonoid[Option[A]] = new MyMonoid[Option[A]] {
+    override def empty: Option[A] = None
+
+    override def combine(t1: Option[A], t2: Option[A]): Option[A] = {
+      (t1, t2) match {
+        case (Some(x), Some(y)) => Some(monid.combine(x, y))
+        case (Some(x), None) => Some(monid.combine(x, monid.empty))
+        case (None, Some(y)) => Some(monid.combine(monid.empty, y))
+        case (None, None) => Some(monid.combine(monid.empty, monid.empty))
+      }
+    }
+  }
+
+
   def optionStringMonoid = new MyMonoid[Option[String]] {
 
     override def empty: Option[String] = None

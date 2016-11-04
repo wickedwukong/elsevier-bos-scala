@@ -23,6 +23,9 @@ object MonoidDemo extends App{
   val optionStringSum = add[Option[String]](List(Some("h"), Some("e"), Some("l"), None, Some("o")))(optionStringMonoid)
   println(optionStringSum)
 
+  val anotherOptionIntSum = add[Option[Int]](List(Some(1), Some(2), Some(3), None, Some(5)))(optionMonoidWithoutImplict(intMonoid))
+
+  println(anotherOptionIntSum)
 
   //what about combine a list of maps?
 
