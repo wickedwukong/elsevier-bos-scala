@@ -18,4 +18,18 @@ object MonadDemo extends App {
   println("hello")
 }
 
+object BuiltInMonad extends App {
+  val first = List(1, 2, 3)
+  val next = List(4, 5, 6)
+  val last = List(7)
+
+  val listCombined = for {
+    itemInFirstList <- first
+    itemInNextList <- next
+    itemInLastList <- last
+  } yield(itemInFirstList * itemInNextList * itemInLastList)
+
+  println(s"list items combined: $listCombined")
+}
+
 
