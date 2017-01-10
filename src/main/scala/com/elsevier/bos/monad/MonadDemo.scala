@@ -11,11 +11,11 @@ Monad law
 
 trait Monad[F[_]] {
   def flatMap[A, B](f: A => F[B]): F[B]
-  def unit[A](a: A): F[A]
+  def pure[A](a: A): F[A]
 }
 
-object MonadDemo {
-
+object MonadDemo extends App {
+  println("hello")
 }
 
 
