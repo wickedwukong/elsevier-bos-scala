@@ -1,0 +1,17 @@
+1. Checkout master
+
+* Introduce Monad concept using the Monad trait
+* Explain F[_] means:
+
+  F is a type constructor. You can fill in the hole with a type to produce another type.
+  e.g List is a type constructor. List[Int] or List[A] is a type
+
+
+  In Scala we declare type constructors using underscores but refer to them without:
+  // Declare F using underscores:
+  def myMethod[F[_]] = {
+   // Refer to F without underscores:
+    val functor = Functor.apply[F] // ...
+  }
+
+  Use TypeConstructor.scala to show this.
