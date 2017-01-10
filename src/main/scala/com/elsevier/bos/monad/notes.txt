@@ -6,8 +6,16 @@
   F is a type constructor. You can fill in the hole with a type to produce another type.
   e.g List is a type constructor. List[Int] or List[A] is a type
 
- 2. Introduce Monad law:
+2. Introduce Monad law:
 
   1. Left identity:(pure(a) flatMapf) == f(a)
   2. Right identity:(m flatMap pure)==m
   3. Associativity: (m flatMap f flatMap g) == (m flatMap (x => f(x) flatMap g))
+
+3. Checkout monad-map-exercise
+
+   Exercise: use pure and flatMap to implement map
+
+4. Checkout monad-map-solution
+
+   show the solution
