@@ -23,3 +23,15 @@
 5. Checkout monad-map-solution
 
    show the solution
+
+6. checkout maybe-exercise
+
+   Ask audience to implement the Maybe
+
+
+7. Checkout out maybe-solution
+   Demo the solution and ask audience how to implement the map to make the for comprehension work.
+   Use intellij to de-sugar the for comprehension to highlight it is actually flatMap and map.
+
+8. Checkout maybe-for
+   Show the audience the implementation of the map to show how the for comprehension works.
