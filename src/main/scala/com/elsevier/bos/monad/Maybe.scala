@@ -19,4 +19,13 @@ object MaybeDemo extends App {
   val value: Maybe[Int] = Just(1).flatMap(a => Just(2).flatMap(b => Just(3).flatMap(c => Just(a * b * c))))
 
   println(value)
+
+//  val value2 = for {
+//    a <- Just(1)
+//    b <- Just(2)
+//    c <- Just(3)
+//  } yield (a * b * c)
+//
+//  println(value2)
+    
 }
