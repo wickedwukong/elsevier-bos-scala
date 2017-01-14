@@ -2,6 +2,7 @@ package com.elsevier.bos.monad
 
 trait Maybe[+A] {
   def flatMap[B](f: A => Maybe[B]): Maybe[B]
+  def map[B](f: A => B): Maybe[B] = flatMap { a => Just(f(a)) }
 }
 
 case class Just[+A](a: A) extends Maybe[A] {
@@ -20,12 +21,12 @@ object MaybeDemo extends App {
 
   println(value)
 
-//  val value2 = for {
-//    a <- Just(1)
-//    b <- Just(2)
-//    c <- Just(3)
-//  } yield (a * b * c)
-//
-//  println(value2)
-    
+  val value2 = for {
+    a <- Just(1)
+    b <- Just(2)
+    c <- Just(3)
+  } yield (a * b * c)
+
+  println(value2)
+
 }
