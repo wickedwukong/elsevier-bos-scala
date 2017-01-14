@@ -5,11 +5,11 @@ trait Maybe[+A] {
 }
 
 case class Just[+A](a: A) extends Maybe[A] {
-  override def flatMap[B](f: (A) => Maybe[B]): Maybe[B] = ???
+  override def flatMap[B](f: (A) => Maybe[B]): Maybe[B] = f(a)
 }
 
 case object MaybeNot extends Maybe[Nothing] {
-  override def flatMap[B](f: (Nothing) => Maybe[B]): Maybe[B] = ???
+  override def flatMap[B](f: (Nothing) => Maybe[B]): Maybe[B] = MaybeNot
 }
 
 object MaybeDemo extends App {
