@@ -1,7 +1,5 @@
 package com.elsevier.bos.monad
 
-import cats.Functor
-
 /*
 Monad law
 1. Left identity:(pure(a) flatMap f) == f(a)
@@ -11,6 +9,7 @@ Monad law
 
 trait Monad[F[_]] {
   def flatMap[A, B](fa: F[A])(f: A => F[B]): F[B]
+
   def pure[A](a: A): F[A]
 }
 
@@ -27,9 +26,19 @@ object BuiltInMonad extends App {
     itemInFirstList <- first
     itemInNextList <- next
     itemInLastList <- last
-  } yield(itemInFirstList * itemInNextList * itemInLastList)
+  } yield (itemInFirstList * itemInNextList * itemInLastList)
 
   println(s"list items combined: $listCombined")
-}
 
+  def parameterValueFor(key: String): Option[String] = Some("100")
+
+  def stringToInt(value: String): Option[Int] = if (value.forall(_.isDigit)) Some(value.toInt) else None
+
+  val result: Option[Option[Int]] = parameterValueFor("CONNECTION_TIMEOUT") map stringToInt
+
+  val result2: Option[Int] = parameterValueFor("CONNECTION_TIMEOUT") flatMap stringToInt
+
+  println(result2)
+
+}
 
