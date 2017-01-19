@@ -36,4 +36,4 @@
 8. Checkout maybe-for
    Show the audience the implementation of the map to show how the for comprehension works.
 
-9. Explain Scala standard Either, Scalaz Either and Cats Xor as monad examples. 
+9. Explain Scala standard Either, Scalaz Either and Cats Xor as monad examples.
