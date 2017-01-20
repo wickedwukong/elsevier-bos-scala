@@ -19,6 +19,54 @@ case class DocumentId(value: String) extends Id
 
 case class Document(documentId: DocumentId, title: String)
 
+object ScalaEitherDemo extends App {
+
+
+  private def documents = Map(DocumentId("1") -> "Functional programming in Scala", DocumentId("2") -> "Pragmatic Programmer")
+
+
+  private def findDocument(documentId: DocumentId): Option[Document] = {
+    documents.get(documentId).map {
+      Document(documentId, _)
+    }
+  }
+
+  private def authenticate(userId: UserId, secret: String): Either[Error, User] = {
+    if (userId.value != "12345") {
+      Left(AuthenticationFailed("Your username or password is invalid"))
+    } else {
+      Right(User(userId, "Bob"))
+    }
+  }
+
+
+  def findDocument(userId: UserId, secret: String, documentId: DocumentId): Either[Error,Document] = {
+
+    for {
+      _ <- authenticate(userId, secret).right
+      document <- findDocument(documentId).map(Right(_)).getOrElse(Left(InvalidDocument(documentId, s"No document found for document Id: ${documentId.value}"))).right
+    } yield document
+  }
+
+  println(findDocument(UserId("12345"), "let me in", DocumentId("1")))
+  println(findDocument(UserId("99999"), "do not let me in", DocumentId("1")))
+  println(findDocument(UserId("12345"), "let me in", DocumentId("100")))
+
+  val anError: Either[Error, Document] = Left(AuthenticationFailed("Bad"))
+
+  val bad = anError.right.map{document => document.title}
+
+  println(s"bad: $bad")
+
+  val aDocument: Either[Error, Document] = Right(Document(DocumentId("3"), "Latex Instructions"))
+
+  val good = aDocument.right.map{document => document.title}
+
+  println(s"good: $good")
+
+}
+
+
 object ScalazEitherDemo extends App {
 
   import scalaz._
