@@ -47,6 +47,9 @@
 Writer is a monad that lets us carry a log along with a computation. We can use it to record
 messages, errors, or additional data about a computation, and extract the log with the final result.
 
-One common use for Writers is logging during multi-threaded computa ons, where traditional logging can
+One common use for Writers is logging during multi-threaded computations, where traditional logging can
 result in interleaved messages from different contexts. With a Writer the log for the computation on is tied to the result,
 so we can run concurrent computation without mixing log messages.
+
+Introduce writer monad then show the writer monad demonstrating it can be used for multi-threaded logging in the advanced-
+scala-with-cats project.
