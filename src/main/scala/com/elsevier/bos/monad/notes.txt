@@ -6,6 +6,8 @@
   F is a type constructor. You can fill in the hole with a type to produce another type.
   e.g List is a type constructor. List[Int] or List[A] is a type
 
+  Show the IOMonad again
+
 2. Introduce Monad law:
 
   1. Left identity:(pure(a) flatMapf) == f(a)
@@ -41,3 +43,10 @@
 * Explain Scalaz \/ and Cats Xor as monad examples and also show Scala standard Either. Highlights Either is not a monad
   and it is not biased.
 * Show writer monad.
+
+Writer is a monad that lets us carry a log along with a computation. We can use it to record
+messages, errors, or additional data about a computation, and extract the log with the final result.
+
+One common use for Writers is logging during multi-threaded computa ons, where traditional logging can
+result in interleaved messages from different contexts. With a Writer the log for the computation on is tied to the result,
+so we can run concurrent computation without mixing log messages.
