@@ -38,5 +38,6 @@
 
 9. Checkout popular-monads.
 
-Explain Scalaz \/ and Cats Xor as monad examples and also show Scala standard Either. Highlights Either is not a monad
-  and it is not biased. 
+* Explain Scalaz \/ and Cats Xor as monad examples and also show Scala standard Either. Highlights Either is not a monad
+  and it is not biased.
+* Show writer monad.
