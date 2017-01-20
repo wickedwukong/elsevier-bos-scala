@@ -42,7 +42,7 @@
 
 * Explain Scalaz \/ and Cats Xor as monad examples and also show Scala standard Either. Highlights Either is not a monad
   and it is not biased.
-* Show writer monad.
+* Show Writer monad.
 
 Writer is a monad that lets us carry a log along with a computation. We can use it to record
 messages, errors, or additional data about a computation, and extract the log with the final result.
@@ -53,3 +53,11 @@ so we can run concurrent computation without mixing log messages.
 
 Introduce writer monad then show the writer monad demonstrating it can be used for multi-threaded logging in the advanced-
 scala-with-cats project.
+
+* Introduce Reader monad
+
+ Reader is a monad that allows us to compose operations that depend on some input. Instances
+ of Reader wrap up functions of one argument, providing us with useful methods for composing them.
+ One common use for Readers is injecting configuration. If we have a number of operations that all depend
+ on some external configuration, we can chain them together using a Reader. The Reader produces one large
+ operation that accepts the configuration on as a parameter and runs everything as specified.
