@@ -11,6 +11,7 @@ Monad law
 
 trait Monad[F[_]] {
   def flatMap[A, B](fa: F[A])(f: A => F[B]): F[B]
+
   def pure[A](a: A): F[A]
 }
 
@@ -33,10 +34,19 @@ case class State[S, A](f: S => (S, A)) {
     new State(x)
   }
 
-  def map(ff: S => (S, A)): State[S, A] = {
-    val pp: S => (S, A) = s => {
-      val (newState, _) = f(s)
-      ff(newState)
+//  def map(ff: S => (S, A)): State[S, A] = {
+//    val pp: S => (S, A) = s => {
+//      val (newState, _) = f(s)
+//      ff(newState)
+//    }
+//
+//    new State(pp)
+//  }
+
+  def map[B](ff: A => B): State[S, B] = {
+    val pp: S => (S, B) = s => {
+      val (newState, newValue) = f(s)
+      (newState, ff(newValue))
     }
 
     new State(pp)
@@ -65,12 +75,12 @@ object StateDemo extends App {
     (newState, result)
   })
 
-//  val x: State[Int, String] = for {
-//    aa <- firstState
-//    bb <- secondState
-//  } yield bb
-//
-//  println(x.run(10))
+  val firstAndSecondState = for {
+    a <- firstState
+    b <- secondState
+  } yield (b)
+
+  println(firstAndSecondState.run(10))
 }
 
 
