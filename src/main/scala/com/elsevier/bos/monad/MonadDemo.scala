@@ -23,7 +23,7 @@ case class State[S, A](f: S => (S, A)) {
   def run(s: S): (S, A) = f(s)
 
   def flatMap(p: S => State[S, A]): State[S, A] = {
-    val x: S => (S, A) = {
+    val ff: S => (S, A) = {
       s => {
         val (s1, value) = f(s)
         val p1: State[S, A] = p(s1)
@@ -31,17 +31,8 @@ case class State[S, A](f: S => (S, A)) {
         y
       }
     }
-    new State(x)
+    new State(ff)
   }
-
-//  def map(ff: S => (S, A)): State[S, A] = {
-//    val pp: S => (S, A) = s => {
-//      val (newState, _) = f(s)
-//      ff(newState)
-//    }
-//
-//    new State(pp)
-//  }
 
   def map[B](ff: A => B): State[S, B] = {
     val pp: S => (S, B) = s => {
