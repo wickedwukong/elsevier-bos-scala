@@ -22,11 +22,11 @@ object MonadDemo extends App {
 case class State[S, A](f: S => (S, A)) {
   def run(s: S): (S, A) = f(s)
 
-  def flatMap[B](p: S => State[S, B]): State[S, B] = {
+  def flatMap[B](p: A => State[S, B]): State[S, B] = {
     val ff: S => (S, B) = {
       s => {
         val (s1, value) = f(s)
-        val p1: State[S, B] = p(s1)
+        val p1: State[S, B] = p(value)
         val y: (S, B) = p1.run(s1)
         y
       }
@@ -52,7 +52,7 @@ object StateDemo extends App {
 
   val firstState: State[Int, String] = State(f)
 
-  val p: Int => State[Int, String] = i => State(i => {
+  val p: String => State[Int, String] = value => State(i => {
     val newState = i * 2
     val result = s"The second state. The new State is $newState"
     (newState, result)
@@ -66,13 +66,12 @@ object StateDemo extends App {
     (newState, result)
   })
 
-  val firstAndSecondState: State[Int, Int] = for {
+  val firstAndSecondState: State[Int, String] = for {
     a <- firstState
     b <- secondState
-  } yield (a)
+  } yield (b)
 
-  private val run: (Int, Int) = firstAndSecondState.run(10)
-  println(run)
+  println(firstAndSecondState.run(10))
 }
 
 
