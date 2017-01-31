@@ -1,6 +1,7 @@
 package com.elsevier.bos.monad
 
 import cats.Functor
+import com.elsevier.bos.monad.CandyMachine.Machine
 
 import scala.util.Random
 
@@ -19,6 +20,17 @@ trait Monad[F[_]] {
 
 object MonadDemo extends App {
   println("hello")
+}
+
+object State {
+  def sequence[S, A](sas: List[State[S, A]]): State[S, List[A]] = {
+    def go(s: S, actions: List[State[S,A]], acc: List[A]): (S, List[A]) =
+      actions match {
+        case Nil => (s, acc.reverse)
+        case h :: t => h.run(s) match { case (s2, a) => go(s2, t, a :: acc) }
+      }
+    State((s: S) => go(s,sas,List()))
+  }
 }
 
 case class State[S, A](f: S => (S, A)) {
@@ -100,19 +112,77 @@ object CandyMachine extends App {
   } yield ()
 
   sealed trait Input
+
   case object Coin extends Input
+
   case object Turn extends Input
 
   case class Machine(locked: Boolean, candies: Int, coins: Int)
 
-  def simulateMachine(inputs: List[Input]): State[Machine, (Int, Int)] = ???
+  def simulateMachine(inputs: List[Input]): State[Machine, (Int, Int)] = {
+
+    val f: Machine => (Machine, (Int, Int)) = machine => {
+      val finalMachine: Machine = inputs.foldLeft(machine) {
+        (newMachine, input) => (input, newMachine) match {
+          case (_, Machine(_, 0, _)) => newMachine
+          case (Coin, Machine(false, _, _)) => newMachine
+          case (Turn, Machine(true, _, _)) => newMachine
+          case (Coin, Machine(true, candy, coin)) =>
+            Machine(false, candy, coin + 1)
+          case (Turn, Machine(false, candy, coin)) =>
+            Machine(true, candy - 1, coin)
+        }
+      }
+      (finalMachine, (finalMachine.candies, finalMachine.coins))
+    }
+    State(f)
+  }
 
 
-  val (candies, coins) = simulateMachine(List(Coin, Turn)).run(Machine(true, 2, 0))
+  val (candies, coins) = simulateMachine(List(Coin, Turn)).run(Machine(true, 2, 1))
 
+  println(candies)
+  println(coins)
 
 }
+object Candy extends App {
+  import State.sequence
+  sealed trait Input
+  case object Coin extends Input
+  case object Turn extends Input
+  case class Machine(locked: Boolean, candies: Int, coins: Int)
 
+  def update = (i: Input) => (s: Machine) =>
+    (i, s) match {
+      case (_, Machine(_, 0, _)) => s
+      case (Coin, Machine(false, _, _)) => s
+      case (Turn, Machine(true, _, _)) => s
+      case (Coin, Machine(true, candy, coin)) =>
+        Machine(false, candy, coin + 1)
+      case (Turn, Machine(false, candy, coin)) =>
+        Machine(true, candy - 1, coin)
+    }
+
+  def modify[S](f: S => S): State[S, Unit] = for {
+    s <- get
+    _ <- set(f(s))
+  } yield ()
+
+  def get[S]: State[S, S] = State(s => (s, s))
+
+  def set[S](s: S): State[S, Unit] = State(_ => (s, ()))
+
+  def simulateMachine(inputs: List[Input]): State[Machine, (Int, Int)] = for {
+    _ <- sequence(inputs map (modify[Machine] _ compose update ))
+    s <- get
+  } yield (s.coins, s.candies)
+
+  val (machine, coinAndCandies) = simulateMachine(List(Coin, Turn)).run(Machine(true, 2, 1))
+
+  println(machine)
+  println(coinAndCandies)
+
+}
 
 
 
