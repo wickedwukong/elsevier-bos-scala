@@ -77,13 +77,13 @@ object StateDemo extends App {
 
   val randomState = State[Random, Int](random => (random, random.nextInt))
 
-  val random3 = for {
+  val randomIntGenerator = for {
     a <- randomState
     b <- randomState
     c <- randomState
   } yield (c)
 
-  private val (finalRandomState, value) = random3.run(new java.util.Random(1L))
+  private val (finalRandomState, value) = randomIntGenerator.run(new java.util.Random(1L))
   println(finalRandomState)
   println(finalRandomState.nextInt)
   println(value)
