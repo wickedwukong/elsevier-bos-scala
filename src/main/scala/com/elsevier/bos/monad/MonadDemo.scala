@@ -2,6 +2,8 @@ package com.elsevier.bos.monad
 
 import cats.Functor
 
+import scala.util.Random
+
 /*
 Monad law
 1. Left identity:(pure(a) flatMap f) == f(a)
@@ -66,12 +68,25 @@ object StateDemo extends App {
     (newState, result)
   })
 
-  val firstAndSecondState: State[Int, String] = for {
+  val firstAndSecondState = for {
     a <- firstState
     b <- secondState
   } yield (b)
 
   println(firstAndSecondState.run(10))
+
+  val randomState = State[Random, Int](random => (random, random.nextInt))
+
+  val random3 = for {
+    a <- randomState
+    b <- randomState
+    c <- randomState
+  } yield (c)
+
+  private val (finalRandomState, value) = random3.run(new java.util.Random(1L))
+  println(finalRandomState)
+  println(finalRandomState.nextInt)
+  println(value)
 }
 
 
