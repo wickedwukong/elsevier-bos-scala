@@ -139,8 +139,9 @@ object CandyMachine extends App {
   }
 
 
-  val (candies, coins) = simulateMachine(List(Coin, Turn)).run(Machine(true, 2, 1))
+  val (machine, (candies, coins)) = simulateMachine(List(Coin, Turn)).run(Machine(true, 2, 1))
 
+  println(machine)
   println(candies)
   println(coins)
 
@@ -181,7 +182,6 @@ object Candy extends App {
 
   println(machine)
   println(coinAndCandies)
-
 }
 
 
