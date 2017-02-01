@@ -1,8 +1,5 @@
 package com.elsevier.bos.monad
 
-import cats.Functor
-import com.elsevier.bos.monad.CandyMachine.Machine
-
 import scala.util.Random
 
 /*
@@ -102,25 +99,13 @@ object StateDemo extends App {
 }
 
 object CandyMachine extends App {
-  def get[S]: State[S, S] = State(s => (s, s))
-
-  def set[S](s: S): State[S, Unit] = State(_ => (s, ()))
-
-  def modify[S](f: S => S): State[S, Unit] = for {
-    s <- get
-    _ <- set(f(s))
-  } yield ()
-
   sealed trait Input
-
   case object Coin extends Input
-
   case object Turn extends Input
 
   case class Machine(locked: Boolean, candies: Int, coins: Int)
 
   def simulateMachine(inputs: List[Input]): State[Machine, (Int, Int)] = {
-
     val f: Machine => (Machine, (Int, Int)) = machine => {
       val finalMachine: Machine = inputs.foldLeft(machine) {
         (newMachine, input) => (input, newMachine) match {
