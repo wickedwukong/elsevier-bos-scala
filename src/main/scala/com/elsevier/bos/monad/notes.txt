@@ -1,3 +1,9 @@
+Monads are one of the most common abstrac ons in Scala, and one that most Scala programmers are familiar with even
+if they don’t know the name.
+Informally, a monad is anything with a flatMap method. We have seen a lot of monads Option, List, Either, and Future.
+We even have special syntax in Scala to support monads: for comprehensions.
+Despite the ubiquity of the concept, Scala lacks a concrete type to encompass “things that can be flatMapped”.
+
 1. Checkout master
 
 * Introduce Monad concept using the Monad trait
