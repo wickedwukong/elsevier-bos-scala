@@ -72,13 +72,18 @@ case class SimpleRNG(seed: Long) extends RNG {
 
 
 object StateDemo extends App {
-  val randomState = State[RNG, Int](rng => rng.nextInt)
+  val int = State[RNG, Int](rng => rng.nextInt)
+
+  def nonNegativeInt: State[RNG, Int] = State[RNG, Int] {
+    rng =>
+      val (newRng, nextInt) = rng.nextInt
+      if (nextInt < 0) (newRng, -(nextInt + 1)) else (newRng, nextInt)
+  }
 
   val randomIntGenerator = for {
-    a <- randomState
-    b <- randomState
-    c <- randomState
-  } yield (c)
+    a <- int
+    b <- nonNegativeInt
+  } yield (a, b)
 
   private val (finalRng, value) = randomIntGenerator.run(SimpleRNG(1L))
   println(finalRng)
