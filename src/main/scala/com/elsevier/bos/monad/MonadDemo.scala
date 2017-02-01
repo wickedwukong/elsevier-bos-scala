@@ -21,12 +21,14 @@ object MonadDemo extends App {
 
 object State {
   def sequence[S, A](sas: List[State[S, A]]): State[S, List[A]] = {
-    def go(s: S, actions: List[State[S,A]], acc: List[A]): (S, List[A]) =
+    def go(s: S, actions: List[State[S, A]], acc: List[A]): (S, List[A]) =
       actions match {
         case Nil => (s, acc.reverse)
-        case h :: t => h.run(s) match { case (s2, a) => go(s2, t, a :: acc) }
+        case h :: t => h.run(s) match {
+          case (s2, a) => go(s2, t, a :: acc)
+        }
       }
-    State((s: S) => go(s,sas,List()))
+    State((s: S) => go(s, sas, List()))
   }
 }
 
@@ -55,36 +57,22 @@ case class State[S, A](f: S => (S, A)) {
   }
 }
 
-object StateDemo extends App {
-  val f: Int => (Int, String) = i => {
-    val newState = i + 1
-    (newState, s"The first state. The new state is $newState")
+trait RNG {
+  def nextInt: (RNG, Int)
+}
+
+case class SimpleRNG(seed: Long) extends RNG {
+  def nextInt: (RNG, Int) = {
+    val newSeed = (seed * 0x5DEECE66DL + 0xBL) & 0xFFFFFFFFFFFFL
+    val nextRNG = SimpleRNG(newSeed)
+    val n = (newSeed >>> 16).toInt
+    (nextRNG, n)
   }
+}
 
-  val firstState: State[Int, String] = State(f)
 
-  val p: String => State[Int, String] = value => State(i => {
-    val newState = i * 2
-    val result = s"The second state. The new State is $newState"
-    (newState, result)
-  })
-
-  println(firstState.flatMap(p).run(10))
-
-  val secondState: State[Int, String] = State(i => {
-    val newState = i * 2
-    val result = s"The second state. The new State is $newState"
-    (newState, result)
-  })
-
-  val firstAndSecondState = for {
-    a <- firstState
-    b <- secondState
-  } yield (b)
-
-  println(firstAndSecondState.run(10))
-
-  val randomState = State[Random, Int](random => (random, random.nextInt))
+object StateDemo extends App {
+  val randomState = State[RNG, Int](rng => rng.nextInt)
 
   val randomIntGenerator = for {
     a <- randomState
@@ -92,15 +80,17 @@ object StateDemo extends App {
     c <- randomState
   } yield (c)
 
-  private val (finalRandomState, value) = randomIntGenerator.run(new java.util.Random(1L))
-  println(finalRandomState)
-  println(finalRandomState.nextInt)
+  private val (finalRng, value) = randomIntGenerator.run(SimpleRNG(1L))
+  println(finalRng)
   println(value)
 }
 
 object CandyMachine extends App {
+
   sealed trait Input
+
   case object Coin extends Input
+
   case object Turn extends Input
 
   case class Machine(locked: Boolean, candies: Int, coins: Int)
@@ -131,11 +121,17 @@ object CandyMachine extends App {
   println(coins)
 
 }
+
 object Candy extends App {
+
   import State.sequence
+
   sealed trait Input
+
   case object Coin extends Input
+
   case object Turn extends Input
+
   case class Machine(locked: Boolean, candies: Int, coins: Int)
 
   def update: (Input) => (Machine) => Machine = (i: Input) => (s: Machine) =>
@@ -159,7 +155,7 @@ object Candy extends App {
   def set[S](s: S): State[S, Unit] = State(_ => (s, ()))
 
   def simulateMachine(inputs: List[Input]): State[Machine, (Int, Int)] = for {
-    _ <- sequence(inputs map (modify[Machine] _ compose update ))
+    _ <- sequence(inputs map (modify[Machine] _ compose update))
     s <- get
   } yield (s.coins, s.candies)
 
