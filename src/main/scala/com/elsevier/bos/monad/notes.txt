@@ -24,6 +24,8 @@ Despite the ubiquity of the concept, Scala lacks a concrete type to encompass â€
    Give a few monad examples from the standard scala lib
    Option, List
 
+   demonstrate what happens when one of the lists is empty or opitons is None
+
 4. Checkout monad-map-exercise
 
    Exercise: use pure and flatMap to implement map
