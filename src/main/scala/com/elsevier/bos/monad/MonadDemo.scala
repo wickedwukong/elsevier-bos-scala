@@ -34,11 +34,11 @@ object BuiltInMonad extends App {
 
   def stringToInt(value: String): Option[Int] = if (value.forall(_.isDigit)) Some(value.toInt) else None
 
-  val result: Option[Option[Int]] = parameterValueFor("CONNECTION_TIMEOUT") map stringToInt
+  val optionMapResult: Option[Option[Int]] = parameterValueFor("CONNECTION_TIMEOUT") map stringToInt
 
-  val result2: Option[Int] = parameterValueFor("CONNECTION_TIMEOUT") flatMap stringToInt
+  val optionFlatmapResult: Option[Int] = parameterValueFor("CONNECTION_TIMEOUT") flatMap stringToInt
 
-  println(result2)
+  println("optionFlatmapResult" + optionFlatmapResult)
 
 }
 
